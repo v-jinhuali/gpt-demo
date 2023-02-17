@@ -1,0 +1,34 @@
+.chatBoxContainer {
+  border-top: 12px solid #f3f3f3;
+  box-shadow: 0 2px 4px var(--box-shadow-color);
+
+  .header {
+    height: 50px;
+    border-bottom: 1px solid #e3e4e5;
+    background-color: #fff;
+  }
+
+  .content {
+    height: 500px;
+    padding: 15px 10px;
+    overflow: auto;
+    background-color: #f7f8f9;
+  }
+
+  .inputWrapper {
+    padding: 10px;
+
+    .inputBox {
+      position: relative;
+
+      .smartReplyBox {
+        margin-bottom: 8px;
+        margin-right: 8px;
+
+        position: absolute;
+        right: 0;
+        bottom: 100%;
+      }
+    }
+  }
+}
