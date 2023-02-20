@@ -10,7 +10,7 @@ interface IRecentConversations {
   onChange?: (newVal: DataType) => void;
 }
 
-const RecemtConverstaions: React.FC<IRecentConversations> = ({ username, data, onChange }) => {
+const RecentConverstaions: React.FC<IRecentConversations> = ({ username, data, onChange }) => {
   const container = useRef<HTMLDivElement>(null);
 
   const myRecentMessages = useMemo(
@@ -47,18 +47,21 @@ const RecemtConverstaions: React.FC<IRecentConversations> = ({ username, data, o
   }, [data]);
 
   return (
-    <div className={styles.messageContainer} ref={container}>
-      {myRecentMessages.map(item => (
-        <EditableText
-          key={`${item.message}-${item.index}`}
-          className={styles.editableText}
-          id={item.index}
-          value={item.message}
-          onChange={handleEditableEnter}
-        />
-      ))}
-    </div>
+    <>
+      <h2 className={styles.title}>Recent Converstaions</h2>
+      <div className={styles.messageContainer} ref={container}>
+        {myRecentMessages.map(item => (
+          <EditableText
+            key={`${item.message}-${item.index}`}
+            className={styles.editableText}
+            id={item.index}
+            value={item.message}
+            onChange={handleEditableEnter}
+          />
+        ))}
+      </div>
+    </>
   );
 };
 
-export default RecemtConverstaions;
+export default RecentConverstaions;

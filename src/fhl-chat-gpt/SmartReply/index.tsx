@@ -1,14 +1,15 @@
 import { useCallback } from "react";
+import { ChatGptResponseType } from "../index.interface";
 import styles from "./index.less";
 
 interface ISmartReplyProps {
-  data?: string[];
-  onItemClick?: (value: string) => void;
+  data?: ChatGptResponseType[];
+  onItemClick?: (value: ChatGptResponseType) => void;
 }
 
 const SmartReply: React.FC<ISmartReplyProps> = ({ data, onItemClick }) => {
   const handleItemClick = useCallback(
-    (value: string) => {
+    (value: ChatGptResponseType) => {
       onItemClick?.(value);
     },
     [onItemClick]
@@ -16,8 +17,8 @@ const SmartReply: React.FC<ISmartReplyProps> = ({ data, onItemClick }) => {
   return (
     <div className={styles.smartReplyContainer}>
       {data?.map(item => (
-        <div className={styles.item} onClick={() => handleItemClick(item)}>
-          {item}
+        <div key={item.intent} className={styles.item} onClick={() => handleItemClick(item)}>
+          {item.intent}
         </div>
       ))}
     </div>

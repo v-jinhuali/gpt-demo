@@ -3,6 +3,8 @@ import MeetingInfo from "./MeetingInfo";
 import { DataType, MeetingInfoType } from "../index.interface";
 
 import styles from "./index.less";
+import { Button, Tooltip } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
 interface ICalendarInfoProps {
   data?: DataType;
@@ -11,29 +13,50 @@ interface ICalendarInfoProps {
 
 const CalendarInfo: React.FC<ICalendarInfoProps> = ({ data, onChange }) => {
   const meetings = useMemo(
-    () => data?.meetings?.map((item, index) => ({ ...item, index })) ?? [],
+    () => data?.userMe?.calendar?.map((item, index) => ({ ...item, index })) ?? [],
     [data]
   );
 
   const handleMeetingChange = useCallback(
     (newVal: MeetingInfoType, id: number) => {
       const dataCopy = { ...data };
-      if (!dataCopy.meetings) {
-        dataCopy.meetings = [];
+
+      if (!dataCopy.userMe!.calendar) {
+        dataCopy.userMe!.calendar = [];
       }
 
-      dataCopy.meetings[id] = newVal;
+      dataCopy.userMe!.calendar[id] = newVal;
       onChange?.(dataCopy);
     },
     [data, onChange]
   );
 
+  const addMeeting = () => {
+    const dataCopy = { ...data };
+    dataCopy.userMe?.calendar?.push(
+      {"title":"meeting","startTime":"2/16/2023 14:00","endTime":"2/16/2023 15:00"} as MeetingInfoType);
+    onChange?.(dataCopy);
+  };
+
   return (
-    <div className={styles.container}>
-      {meetings.map(item => (
-        <MeetingInfo id={item.index} meeting={item} onChange={handleMeetingChange} />
-      ))}
-    </div>
+    <>
+      <div className={styles.titleContainer}>
+        <h2 className={styles.title}>Calendar</h2>
+        <Tooltip title="Add a meeting">
+          <Button type="primary" icon={<PlusOutlined />} onClick={addMeeting} />
+        </Tooltip>
+      </div>
+      <div className={styles.container}>
+        {meetings.map(item => (
+          <MeetingInfo
+            key={item.index}
+            id={item.index}
+            meeting={item}
+            onChange={handleMeetingChange}
+          />
+        ))}
+      </div>
+    </>
   );
 };
 

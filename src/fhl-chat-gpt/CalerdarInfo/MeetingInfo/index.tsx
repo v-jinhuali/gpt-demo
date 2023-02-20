@@ -36,31 +36,33 @@ const MeetingInfo: React.FC<IMeetingInfoProps> = ({ id, meeting, onChange }) => 
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.title}>
-        <EditableText
-          className={styles.titleText}
-          id={"title"}
-          value={title}
-          onChange={handleChange}
-        />
+    <>
+      <div className={styles.container}>
+        <div className={styles.title}>
+          <EditableText
+            className={styles.titleText}
+            id={"title"}
+            value={title}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.timeRange}>
+          <EditableText
+            className={styles.timeText}
+            id={"startTime"}
+            value={startTime ?? "**"}
+            onChange={handleChange}
+          />
+          <span> - </span>
+          <EditableText
+            className={styles.timeText}
+            id={"endTime"}
+            value={endTime ?? "**"}
+            onChange={handleChange}
+          />
+        </div>
       </div>
-      <div className={styles.timeRange}>
-        <EditableText
-          className={styles.timeText}
-          id={"startTime"}
-          value={startTime ?? "**"}
-          onChange={handleChange}
-        />
-        <span> - </span>
-        <EditableText
-          className={styles.timeText}
-          id={"endTime"}
-          value={endTime ?? "**"}
-          onChange={handleChange}
-        />
-      </div>
-    </div>
+    </>
   );
 };
 

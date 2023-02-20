@@ -1,6 +1,7 @@
 export interface UserInfoType {
   name?: string;
   status?: string;
+  calendar?: MeetingInfoType[];
 }
 
 export interface MessageInfoType {
@@ -17,12 +18,18 @@ export interface MeetingInfoType {
 export interface DataType {
   userTarget?: UserInfoType;
   userMe?: UserInfoType;
-  meetings?: MeetingInfoType[];
   relatedConversations?: MessageInfoType[][];
   recentConversations?: [MessageInfoType[]?];
+  mode?: Mode;
+  receivedMessage?: string;
 }
 
 export interface ChatGptResponseType {
-  message?: MessageInfoType;
-  smartReply?: string[];
+  intent?: string;
+  message?: string;
+}
+
+export enum Mode {
+  Starter,
+  Reply
 }

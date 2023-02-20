@@ -6,13 +6,13 @@ import UserInfo from "../UserInfo";
 import SmartReply from "../SmartReply";
 
 import "antd/dist/antd.css";
-import { DataType } from "../index.interface";
+import { ChatGptResponseType, DataType, Mode } from "../index.interface";
 
 interface IChatBoxProps {
   data?: DataType;
-  popSuggestionsData?: string[];
+  popSuggestionsData?: ChatGptResponseType[];
   onChange?: (newVal: DataType) => void;
-  onSmartReplyClick?: () => void;
+  onSmartReplyClick?: (value: ChatGptResponseType) => void;
 }
 
 const ChatBox: React.FC<IChatBoxProps> = ({
@@ -33,7 +33,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({
   );
 
   const handleInputEnter = useCallback(() => {
-    if(!inputValue) {
+    if (!inputValue) {
       return;
     }
 
@@ -47,13 +47,8 @@ const ChatBox: React.FC<IChatBoxProps> = ({
   }, [data, inputValue, myName]);
 
   const handleSmartClick = useCallback(
-    (value: string) => {
-      const dataCopy = { ...data };
-      dataCopy.recentConversations = [
-        [...(dataCopy.recentConversations?.[0] ?? []), { name: myName, message: value }]
-      ];
-      onChange?.(dataCopy);
-      onSmartReplyClick?.();
+    (value: ChatGptResponseType) => {
+      setInputValue(value.message ?? "");
     },
     [data, onChange, onSmartReplyClick]
   );
@@ -78,13 +73,13 @@ const ChatBox: React.FC<IChatBoxProps> = ({
       </div>
       <div className={styles.inputWrapper}>
         <div className={styles.inputBox}>
-          {!!popSuggestionsData?.length && (
-            <div className={styles.smartReplyBox}>
-              <SmartReply data={popSuggestionsData} onItemClick={handleSmartClick} />
-            </div>
-          )}
           <Input value={inputValue} onChange={handleInputChange} onPressEnter={handleInputEnter} />
         </div>
+        {!!popSuggestionsData?.length && (
+          <div className={styles.smartReplyBox}>
+            <SmartReply data={popSuggestionsData} onItemClick={handleSmartClick} />
+          </div>
+        )}
       </div>
     </div>
   );
