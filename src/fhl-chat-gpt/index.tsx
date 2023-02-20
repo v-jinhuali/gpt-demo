@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { message } from "antd";
-import ChatBox from "./ChatBox";
-import UserInfo from "./UserInfo";
 import RecemtConverstaions from "./RecentConversations";
 import CalendarInfo from "./CalerdarInfo";
 import { postData } from "@/services";
 import { mockedInfo } from "../mocked-data";
 import { ChatGptResponseType, DataType } from "./index.interface";
+import Chat from "./Chat";
 
 import styles from "./index.less";
 
@@ -70,8 +69,7 @@ const FhlChatGpt: React.FC = () => {
     <div className={styles.container}>
       {contextHolder}
       <div className={styles.chatContainer}>
-        <UserInfo {...data.userMe} />
-        <ChatBox
+        <Chat
           data={data}
           popSuggestionsData={popSuggestionsData}
           onChange={handleOnChange}
