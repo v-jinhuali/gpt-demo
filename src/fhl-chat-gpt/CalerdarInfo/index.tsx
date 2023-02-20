@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useMemo } from "react";
 import MeetingInfo from "./MeetingInfo";
 import { DataType, MeetingInfoType } from "../index.interface";
 
@@ -9,7 +9,7 @@ interface ICalendarInfoProps {
   onChange?: (newVal: DataType) => void;
 }
 
-const CalendarInfo: React.FC<ICalendarInfoProps> = ({ data, onChange }) => {
+const CalendarInfo: FC<ICalendarInfoProps> = ({ data, onChange }) => {
   const meetings = useMemo(
     () => data?.meetings?.map((item, index) => ({ ...item, index })) ?? [],
     [data]
@@ -30,8 +30,13 @@ const CalendarInfo: React.FC<ICalendarInfoProps> = ({ data, onChange }) => {
 
   return (
     <div className={styles.container}>
-      {meetings.map(item => (
-        <MeetingInfo id={item.index} meeting={item} onChange={handleMeetingChange} />
+      {meetings.map((item, index) => (
+        <MeetingInfo
+          key={`${item.title}-${index}`}
+          id={item.index}
+          meeting={item}
+          onChange={handleMeetingChange}
+        />
       ))}
     </div>
   );

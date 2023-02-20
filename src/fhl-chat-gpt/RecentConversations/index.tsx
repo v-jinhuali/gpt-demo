@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef } from "react";
 import { EditableText } from "@/components";
-import { DataType, MessageInfoType } from "../index.interface";
+import { DataType } from "../index.interface";
 
 import styles from "./index.less";
 
@@ -10,7 +10,7 @@ interface IRecentConversations {
   onChange?: (newVal: DataType) => void;
 }
 
-const RecemtConverstaions: React.FC<IRecentConversations> = ({ username, data, onChange }) => {
+const RecemtConverstaions: FC<IRecentConversations> = ({ username, data, onChange }) => {
   const container = useRef<HTMLDivElement>(null);
 
   const myRecentMessages = useMemo(

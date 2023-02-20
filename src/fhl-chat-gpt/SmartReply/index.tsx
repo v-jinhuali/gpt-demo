@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { FC, useCallback } from "react";
 import styles from "./index.less";
 
 interface ISmartReplyProps {
@@ -6,7 +6,7 @@ interface ISmartReplyProps {
   onItemClick?: (value: string) => void;
 }
 
-const SmartReply: React.FC<ISmartReplyProps> = ({ data, onItemClick }) => {
+const SmartReply: FC<ISmartReplyProps> = ({ data, onItemClick }) => {
   const handleItemClick = useCallback(
     (value: string) => {
       onItemClick?.(value);
@@ -15,8 +15,8 @@ const SmartReply: React.FC<ISmartReplyProps> = ({ data, onItemClick }) => {
   );
   return (
     <div className={styles.smartReplyContainer}>
-      {data?.map(item => (
-        <div className={styles.item} onClick={() => handleItemClick(item)}>
+      {data?.map((item, index) => (
+        <div key={`${item}-${index}`} className={styles.item} onClick={() => handleItemClick(item)}>
           {item}
         </div>
       ))}

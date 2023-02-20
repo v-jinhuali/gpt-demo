@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { FC, FormEvent, KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
 import cn from "classnames";
 
 import styles from "./index.less";
@@ -10,7 +10,7 @@ interface IEditableTextProps {
   onChange?: (value: string, id: number | string) => void;
 }
 
-const EditableText: React.FC<IEditableTextProps> = ({ className, id, value, onChange }) => {
+const EditableText: FC<IEditableTextProps> = ({ className, id, value, onChange }) => {
   const [isEditable, setIsEditable] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
   const inputValueRef = useRef(value);
@@ -23,13 +23,13 @@ const EditableText: React.FC<IEditableTextProps> = ({ className, id, value, onCh
     setIsEditable(false);
   }, []);
 
-  const handleInput = useCallback((e: React.FormEvent<HTMLDivElement>) => {
+  const handleInput = useCallback((e: FormEvent<HTMLDivElement>) => {
     const target = e.target as HTMLDivElement;
     inputValueRef.current = target.textContent ?? "";
   }, []);
 
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
+    (e: KeyboardEvent<HTMLDivElement>) => {
       if (e.key === "Enter") {
         e.preventDefault();
         onChange?.(inputValueRef.current, id);

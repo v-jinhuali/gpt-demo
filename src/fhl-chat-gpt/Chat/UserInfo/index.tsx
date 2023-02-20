@@ -1,3 +1,4 @@
+import { FC } from "react";
 import styles from "./index.less";
 
 interface IUserInfoProps {
@@ -5,7 +6,7 @@ interface IUserInfoProps {
   status?: string;
 }
 
-const UserInfo: React.FC<IUserInfoProps> = ({ name, status }) => {
+const UserInfo: FC<IUserInfoProps> = ({ name, status }) => {
   return (
     <div className={styles.userInfoContainer}>
       <div className={styles.basicInfo}>{name ?? "--"}</div>

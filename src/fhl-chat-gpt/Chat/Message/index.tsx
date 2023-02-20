@@ -1,3 +1,4 @@
+import { FC } from "react";
 import cn from "classnames";
 import styles from "./index.less";
 
@@ -6,7 +7,7 @@ interface IMessageProps {
   message: string;
 }
 
-const Message: React.FC<IMessageProps> = ({ isSelf, message }) => {
+const Message: FC<IMessageProps> = ({ isSelf, message }) => {
   return (
     <div className={cn(styles.messageContainer, isSelf && styles.selfContainer)}>
       <div className={styles.contentWrapper}>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { message } from "antd";
 import RecemtConverstaions from "./RecentConversations";
 import CalendarInfo from "./CalerdarInfo";
@@ -9,12 +9,12 @@ import Chat from "./Chat";
 
 import styles from "./index.less";
 
-const FhlChatGpt: React.FC = () => {
+const FhlChatGpt: FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [data, setData] = useState<DataType>({});
   const [popSuggestionsData, setPopSuggestionsData] = useState<string[]>([]);
 
-  const username = useMemo(() => data.userMe?.name, [data]);
+  const username = useMemo(() => data.userMe?.name, [data.userMe?.name]);
 
   const getResponseFromChatGpt = useCallback(async (newData: DataType) => {
     try {
@@ -40,7 +40,7 @@ const FhlChatGpt: React.FC = () => {
         duration: 2
       });
     }
-  }, []);
+  }, [messageApi]);
 
   const handleOnChange = useCallback(
     (newData: DataType) => {
@@ -53,7 +53,7 @@ const FhlChatGpt: React.FC = () => {
 
   const handleSmartReplyClick = useCallback(() => {
     setPopSuggestionsData([]);
-  }, [getResponseFromChatGpt]);
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {

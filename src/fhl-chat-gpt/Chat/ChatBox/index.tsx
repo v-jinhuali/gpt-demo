@@ -1,12 +1,12 @@
-import { KeyboardEventHandler, useCallback, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FC, useCallback, useEffect, useRef, useState } from "react";
 import { Input } from "antd";
 import styles from "./index.less";
 import Message from "../Message";
 import UserInfo from "../UserInfo";
 import SmartReply from "../SmartReply";
+import { DataType } from "../../index.interface";
 
 import "antd/dist/antd.css";
-import { DataType } from "../index.interface";
 
 interface IChatBoxProps {
   data?: DataType;
@@ -15,12 +15,7 @@ interface IChatBoxProps {
   onSmartReplyClick?: () => void;
 }
 
-const ChatBox: React.FC<IChatBoxProps> = ({
-  data,
-  popSuggestionsData,
-  onChange,
-  onSmartReplyClick
-}) => {
+const ChatBox: FC<IChatBoxProps> = ({ data, popSuggestionsData, onChange, onSmartReplyClick }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -28,12 +23,12 @@ const ChatBox: React.FC<IChatBoxProps> = ({
   const messages = [...(data?.recentConversations?.[0] ?? [])];
 
   const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value),
+    (e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value),
     []
   );
 
   const handleInputEnter = useCallback(() => {
-    if(!inputValue) {
+    if (!inputValue) {
       return;
     }
 
@@ -44,7 +39,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({
       [...(dataCopy.recentConversations?.[0] ?? []), { name: myName, message: inputValue }]
     ];
     onChange?.(dataCopy);
-  }, [data, inputValue, myName]);
+  }, [data, inputValue, myName, onChange]);
 
   const handleSmartClick = useCallback(
     (value: string) => {
@@ -55,7 +50,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({
       onChange?.(dataCopy);
       onSmartReplyClick?.();
     },
-    [data, onChange, onSmartReplyClick]
+    [data, myName, onChange, onSmartReplyClick]
   );
 
   useEffect(() => {
@@ -73,7 +68,11 @@ const ChatBox: React.FC<IChatBoxProps> = ({
       </div>
       <div ref={contentRef} className={styles.content}>
         {messages.map(item => (
-          <Message isSelf={item.name === myName} message={item.message ?? ""} />
+          <Message
+            key={`${item.message}`}
+            isSelf={item.name === myName}
+            message={item.message ?? ""}
+          />
         ))}
       </div>
       <div className={styles.inputWrapper}>

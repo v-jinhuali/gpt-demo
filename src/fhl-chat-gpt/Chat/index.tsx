@@ -1,3 +1,4 @@
+import { FC } from "react";
 import UserInfo from "./UserInfo";
 import ChatBox from "./ChatBox";
 import { DataType } from "../index.interface";
@@ -11,7 +12,7 @@ interface IChatProps {
   onSmartReplyClick?: () => void;
 }
 
-const Chat: React.FC<IChatProps> = ({
+const Chat: FC<IChatProps> = ({
   data,
   popSuggestionsData,
   onChange,

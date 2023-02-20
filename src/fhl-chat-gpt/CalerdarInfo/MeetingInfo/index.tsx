@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { EditableText } from "../../../components";
 import { MeetingInfoType } from "../../index.interface";
 
@@ -10,7 +10,7 @@ interface IMeetingInfoProps {
   onChange?: (newVal: MeetingInfoType, id: number) => void;
 }
 
-const MeetingInfo: React.FC<IMeetingInfoProps> = ({ id, meeting, onChange }) => {
+const MeetingInfo: FC<IMeetingInfoProps> = ({ id, meeting, onChange }) => {
   const { title, startTime, endTime } = useMemo(() => {
     const title = meeting?.title ?? "";
     const startTime = meeting?.startTime ?? "";
