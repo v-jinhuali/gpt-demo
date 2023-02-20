@@ -13,6 +13,7 @@ export interface MeetingInfoType {
   title?: string;
   startTime?: string;
   endTime?: string;
+  checked?: boolean;
 }
 
 export interface DataType {
@@ -22,6 +23,7 @@ export interface DataType {
   recentConversations?: [MessageInfoType[]?];
   mode?: Mode;
   receivedMessage?: string;
+  currentTime?: string;
 }
 
 export interface ChatGptResponseType {

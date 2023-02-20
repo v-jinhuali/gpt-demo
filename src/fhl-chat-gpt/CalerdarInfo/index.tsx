@@ -31,12 +31,16 @@ const CalendarInfo: React.FC<ICalendarInfoProps> = ({ data, onChange }) => {
     [data, onChange]
   );
 
-  const addMeeting = () => {
+  const addMeeting = useCallback(() => {
     const dataCopy = { ...data };
-    dataCopy.userMe?.calendar?.push(
-      {"title":"meeting","startTime":"2/16/2023 14:00","endTime":"2/16/2023 15:00"} as MeetingInfoType);
+    dataCopy.userMe?.calendar?.push({
+      title: "meeting",
+      startTime: "2/16/2023 14:00",
+      endTime: "2/16/2023 15:00",
+      checked: true
+    } as MeetingInfoType);
     onChange?.(dataCopy);
-  };
+  }, [onChange]);
 
   return (
     <>

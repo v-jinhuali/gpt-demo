@@ -1,11 +1,12 @@
 import { KeyboardEventHandler, useCallback, useEffect, useRef, useState } from "react";
-import { Input } from "antd";
+import { Button, Input, InputRef } from "antd";
 import styles from "./index.less";
 import Message from "../Message";
 import UserInfo from "../UserInfo";
 import SmartReply from "../SmartReply";
 
 import "antd/dist/antd.css";
+import { SendOutlined } from "@ant-design/icons";
 import { ChatGptResponseType, DataType, Mode } from "../index.interface";
 
 interface IChatBoxProps {
@@ -67,13 +68,14 @@ const ChatBox: React.FC<IChatBoxProps> = ({
         <UserInfo {...data?.userTarget} />
       </div>
       <div ref={contentRef} className={styles.content}>
-        {messages.map(item => (
-          <Message isSelf={item.name === myName} message={item.message ?? ""} />
+        {messages.map((item, index) => (
+          <Message key={index} isSelf={item.name === myName} message={item.message ?? ""} />
         ))}
       </div>
       <div className={styles.inputWrapper}>
         <div className={styles.inputBox}>
           <Input value={inputValue} onChange={handleInputChange} onPressEnter={handleInputEnter} />
+          <Button type="primary" icon={<SendOutlined />} onClick={handleInputEnter}></Button>
         </div>
         {!!popSuggestionsData?.length && (
           <div className={styles.smartReplyBox}>

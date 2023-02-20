@@ -6,8 +6,18 @@ export const mockedInfo = {
     name: "Adam",
     status: "Available",
     calendar: [
-      { title: "FHL kick-off meeting", startTime: "2/13/2023 11:00", endTime: "2/13/2023 12:00" },
-      { title: "fhl workstream division", startTime: "2/13/2023 14:00", endTime: "2/13/2023 15:00" }
+      {
+        title: "FHL kick-off meeting",
+        startTime: "2/13/2023 11:00",
+        endTime: "2/13/2023 12:00",
+        checked: true
+      },
+      {
+        title: "fhl workstream division",
+        startTime: "2/13/2023 14:00",
+        endTime: "2/13/2023 15:00",
+        checked: true
+      }
     ]
   },
   userTarget: { name: "Bella", status: "Available" },
@@ -36,11 +46,7 @@ export const mockedInfo = {
       }
     ]
   ],
-  recentConversations: [
-    [
-      { name: "Adam Wang", message: "Hi" },
-      { name: "somebody", message: "hello" }
-    ]
-  ] as [MessageInfoType[]?],
-  receivedMessage: "Hi Adam, How's the status of your FHL project?"
+  recentConversations: [[]] as [MessageInfoType[]?],
+  receivedMessage: "",
+  currentTime: "2/13/2023 13:45"
 };

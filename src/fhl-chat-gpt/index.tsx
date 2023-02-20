@@ -4,12 +4,12 @@ import ChatBox from "./ChatBox";
 import UserInfo from "./UserInfo";
 import RecentConverstaions from "./RecentConversations";
 import CalendarInfo from "./CalerdarInfo";
-import ModeSwitcher from "./ModeSwitcher";
 import { postData } from "@/services";
 import { mockedInfo } from "../mocked-data";
 import { ChatGptResponseType, DataType } from "./index.interface";
 
 import styles from "./index.less";
+import Toolbar from "./Toolbar";
 
 const FhlChatGpt: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -20,7 +20,7 @@ const FhlChatGpt: React.FC = () => {
 
   const getResponseFromChatGpt = useCallback(async (newData: DataType) => {
     try {
-      const res = await postData("http://10.172.44.71:12345/smartreply", mockedInfo);
+      const res = await postData("http://10.172.44.71:12345/smartreply", newData);
 
       const resData = res.data as ChatGptResponseType[];
 
@@ -58,8 +58,9 @@ const FhlChatGpt: React.FC = () => {
   return (
     <div className={styles.container}>
       {contextHolder}
+
       <div className={styles.chatContainer}>
-        <ModeSwitcher data={data} onSwitch={newData => setData(newData)} />
+        <Toolbar data={data} onChange={newData => setData(newData)}></Toolbar>
         <UserInfo {...data.userMe} />
         <ChatBox data={data} popSuggestionsData={popSuggestionsData} onChange={handleOnChange} />
       </div>
@@ -67,7 +68,7 @@ const FhlChatGpt: React.FC = () => {
         <RecentConverstaions username={username} data={data} onChange={handleOnChange} />
       </div>
       <div className={styles.otherInfo}>
-        <CalendarInfo data={data} onChange={handleOnChange} />
+        <CalendarInfo data={data} onChange={newData => setData(newData)} />
       </div>
     </div>
   );

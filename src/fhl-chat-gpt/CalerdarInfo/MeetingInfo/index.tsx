@@ -1,3 +1,5 @@
+import { Checkbox } from "antd";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { EditableText } from "../../../components";
 import { MeetingInfoType } from "../../index.interface";
@@ -11,17 +13,19 @@ interface IMeetingInfoProps {
 }
 
 const MeetingInfo: React.FC<IMeetingInfoProps> = ({ id, meeting, onChange }) => {
-  const { title, startTime, endTime } = useMemo(() => {
+  const { title, startTime, endTime, checked } = useMemo(() => {
     const title = meeting?.title ?? "";
     const startTime = meeting?.startTime ?? "";
     const endTime = meeting?.endTime ?? "";
+    const checked = meeting?.checked ?? true;
 
     return {
       title,
       startTime,
-      endTime
+      endTime,
+      checked
     };
-  }, [meeting]);
+  }, [id, meeting]);
 
   const handleChange = useCallback(
     (value: string, key: string | number) => {
@@ -31,12 +35,22 @@ const MeetingInfo: React.FC<IMeetingInfoProps> = ({ id, meeting, onChange }) => 
     [id, meeting, onChange]
   );
 
+  const handleCheckboxOnChange = useCallback(
+    (e: CheckboxChangeEvent) => {
+      const newMeeting = { ...meeting };
+      newMeeting.checked = e.target.checked;
+      onChange?.(newMeeting, id);
+    },
+    [id, meeting]
+  );
+
   if (!title) {
     return null;
   }
 
   return (
-    <>
+    <div className={styles.meetingCard}>
+      <Checkbox checked={checked} onChange={handleCheckboxOnChange}></Checkbox>
       <div className={styles.container}>
         <div className={styles.title}>
           <EditableText
@@ -62,7 +76,7 @@ const MeetingInfo: React.FC<IMeetingInfoProps> = ({ id, meeting, onChange }) => 
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
