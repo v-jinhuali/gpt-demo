@@ -11,6 +11,7 @@ import { ChatGptResponseType, DataType } from "./index.interface";
 import styles from "./index.less";
 import Toolbar from "./Toolbar";
 import NewUserInfo from "./NewUserInfo";
+import RelatedConversations from "./RelatedConversations";
 
 const FhlChatGpt: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -50,6 +51,21 @@ const FhlChatGpt: React.FC = () => {
     [getResponseFromChatGpt]
   );
 
+  const updateStatus = (newVal: string, id: string | number) => {
+    if (!newVal) {
+      return;
+    }
+
+    var copyData = { ...data };
+    if (id === "me") {
+      copyData.userMe!.status = newVal;
+    } else {
+      copyData.userTarget!.status = newVal;
+    }
+
+    setData(copyData);
+  };
+
   useEffect(() => {
     setTimeout(() => {
       setData(mockedInfo);
@@ -66,17 +82,21 @@ const FhlChatGpt: React.FC = () => {
 
       <div className={styles.chatContainer}>
         <Toolbar data={data} onChange={newData => setData(newData)}></Toolbar>
-        <UserInfo {...data.userMe} />
-        {/* <NewUserInfo {...data.userMe} /> */}
+        {/* <UserInfo {...data.userMe} /> */}
+        <NewUserInfo {...data.userMe} onChange={updateStatus} />
         <ChatBox
           disable={busy}
           data={data}
           popSuggestionsData={popSuggestionsData}
+          onUpdateStatus={updateStatus}
           onChange={handleOnChange}
         />
       </div>
-      <div className={styles.messageContainer}>
+      {/* <div className={styles.messageContainer}>
         <RecentConverstaions username={username} data={data} onChange={handleOnChange} />
+      </div> */}
+      <div className={styles.messageContainer}>
+        <RelatedConversations data={data} onChange={newData => setData(newData)} />
       </div>
       <div className={styles.otherInfo}>
         <CalendarInfo data={data} onChange={newData => setData(newData)} />

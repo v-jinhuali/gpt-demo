@@ -16,10 +16,15 @@ export interface MeetingInfoType {
   checked?: boolean;
 }
 
+export interface ConversationInfoType {
+  messages: MessageInfoType[];
+  checked: boolean;
+}
+
 export interface DataType {
   userTarget?: UserInfoType;
   userMe?: UserInfoType;
-  relatedConversations?: MessageInfoType[][];
+  relatedConversations?: ConversationInfoType[];
   recentConversations?: [MessageInfoType[]?];
   mode?: Mode;
   receivedMessage?: string;

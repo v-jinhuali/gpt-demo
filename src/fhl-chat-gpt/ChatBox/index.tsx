@@ -9,6 +9,8 @@ import "antd/dist/antd.css";
 import { SendOutlined } from "@ant-design/icons";
 import { ChatGptResponseType, DataType, MessageInfoType, Mode } from "../index.interface";
 import NewMessage from "../NewMessage";
+import NewUserInfo from "../NewUserInfo";
+const { TextArea } = Input;
 
 interface IChatBoxProps {
   disable: boolean;
@@ -16,6 +18,7 @@ interface IChatBoxProps {
   popSuggestionsData?: ChatGptResponseType[];
   onChange?: (newVal: DataType) => void;
   onSmartReplyClick?: (value: ChatGptResponseType) => void;
+  onUpdateStatus?: (newVal: string, id: string) => void;
 }
 
 const ChatBox: React.FC<IChatBoxProps> = ({
@@ -23,7 +26,8 @@ const ChatBox: React.FC<IChatBoxProps> = ({
   data,
   popSuggestionsData,
   onChange,
-  onSmartReplyClick
+  onSmartReplyClick,
+  onUpdateStatus
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const contentRef = useRef<HTMLDivElement>(null);
@@ -32,7 +36,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({
   const messages = [...(data?.recentConversations?.[0] ?? [])];
 
   const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value),
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setInputValue(e.target.value),
     []
   );
 
@@ -63,6 +67,12 @@ const ChatBox: React.FC<IChatBoxProps> = ({
     },
     [data]
   );
+  const updateStatus = (newVal: string, id: string | number) => {
+    if (!newVal) {
+      return;
+    }
+    onUpdateStatus?.(newVal, "target");
+  };
 
   const handleSmartClick = useCallback(
     (value: ChatGptResponseType) => {
@@ -82,7 +92,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({
   return (
     <div className={styles.chatBoxContainer}>
       <div className={styles.header}>
-        <UserInfo {...data?.userTarget} />
+        <NewUserInfo {...data?.userTarget} onChange={updateStatus} />
       </div>
       <div ref={contentRef} className={styles.content}>
         {messages.map((item, index) => (
@@ -98,7 +108,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({
       </div>
       <div className={styles.inputWrapper}>
         <div className={styles.inputBox}>
-          <Input
+          <TextArea
             disabled={disable}
             value={inputValue}
             onChange={handleInputChange}

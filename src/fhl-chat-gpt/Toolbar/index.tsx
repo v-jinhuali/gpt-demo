@@ -24,12 +24,14 @@ const Toolbar: React.FC<IToolbarProps> = ({ data, onChange }) => {
         const message = "Hi Adam, How's the status of your FHL project?";
         dataCopy.receivedMessage = message;
         dataCopy.recentConversations = [
-          [...(dataCopy.recentConversations?.[0] ?? []), { name: "bot", message: message }]
+          [
+            ...(dataCopy.recentConversations?.[0] ?? []),
+            { name: dataCopy.userTarget?.name, message: message }
+          ]
         ];
       } else {
         dataCopy.receivedMessage = "";
         data?.recentConversations?.[0]?.splice(0, data?.recentConversations?.[0].length ?? 0);
-        
       }
 
       onChange?.(dataCopy);

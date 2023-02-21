@@ -27,14 +27,15 @@ const NewMessage: React.FC<IMessageProps> = ({ id, myName, item, onChange }) => 
   return (
     <div className={cn(styles.messageContainer, isSelf && styles.selfContainer)}>
       <div className={styles.contentWrapper}>
-        {!isSelf && <div className={styles.avatar} />}
-        {/* <div className={styles.content}>{message}</div> */}
-        <EditableText
-          className={styles.editableText}
-          id={id}
-          value={item.message ?? ""}
-          onChange={handleEditableEnter}
-        />
+        <div className={styles.content}>
+          <div className={styles.name}>{<span>{item.name}</span>}</div>
+          <EditableText
+            className={cn(styles.editableText, styles.text)}
+            id={id}
+            value={item.message ?? ""}
+            onChange={handleEditableEnter}
+          />
+        </div>
       </div>
     </div>
   );
