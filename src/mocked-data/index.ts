@@ -25,7 +25,7 @@ export const mockedInfo = {
     {
       messages: [
         { name: "Lala", message: "I was not able to see output on AML" },
-        { name: "Adam Wang", message: "Let's schedule a meeting with Bella to discuss this issue." }
+        { name: "Adam", message: "Let's schedule a meeting with Bella to discuss this issue." }
       ],
       checked: true
     },

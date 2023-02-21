@@ -23,6 +23,7 @@ const FhlChatGpt: React.FC = () => {
 
   const getResponseFromChatGpt = useCallback(async (newData: DataType) => {
     try {
+      setBusy(true);
       const res = await postData("http://10.172.44.71:12345/smartreply", newData);
 
       const resData = res.data as ChatGptResponseType[];
@@ -43,10 +44,10 @@ const FhlChatGpt: React.FC = () => {
 
   const handleOnChange = useCallback(
     (newData: DataType) => {
-      setBusy(true);
+      // setBusy(true);
       setData(newData);
-      setPopSuggestionsData([]);
-      getResponseFromChatGpt(newData);
+      // setPopSuggestionsData([]);
+      // getResponseFromChatGpt(newData);
     },
     [getResponseFromChatGpt]
   );
@@ -83,9 +84,13 @@ const FhlChatGpt: React.FC = () => {
       <div className={styles.chatContainer}>
         <Toolbar data={data} onChange={newData => setData(newData)}></Toolbar>
         {/* <UserInfo {...data.userMe} /> */}
-        <NewUserInfo {...data.userMe} onChange={updateStatus} />
+        <NewUserInfo
+          busy={busy}
+          {...data.userMe}
+          onChange={updateStatus}
+          onGet={() => getResponseFromChatGpt(data)}
+        />
         <ChatBox
-          disable={busy}
           data={data}
           popSuggestionsData={popSuggestionsData}
           onUpdateStatus={updateStatus}

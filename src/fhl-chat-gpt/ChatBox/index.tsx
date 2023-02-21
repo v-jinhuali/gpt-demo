@@ -13,7 +13,6 @@ import NewUserInfo from "../NewUserInfo";
 const { TextArea } = Input;
 
 interface IChatBoxProps {
-  disable: boolean;
   data?: DataType;
   popSuggestionsData?: ChatGptResponseType[];
   onChange?: (newVal: DataType) => void;
@@ -22,7 +21,6 @@ interface IChatBoxProps {
 }
 
 const ChatBox: React.FC<IChatBoxProps> = ({
-  disable,
   data,
   popSuggestionsData,
   onChange,
@@ -109,17 +107,12 @@ const ChatBox: React.FC<IChatBoxProps> = ({
       <div className={styles.inputWrapper}>
         <div className={styles.inputBox}>
           <TextArea
-            disabled={disable}
+            rows={1}
             value={inputValue}
             onChange={handleInputChange}
             onPressEnter={handleInputEnter}
           />
-          <Button
-            disabled={disable}
-            type="primary"
-            icon={<SendOutlined />}
-            onClick={handleInputEnter}
-          ></Button>
+          <Button type="primary" icon={<SendOutlined />} onClick={handleInputEnter}></Button>
         </div>
         {!!popSuggestionsData?.length && (
           <div className={styles.smartReplyBox}>

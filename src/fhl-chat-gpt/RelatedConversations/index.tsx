@@ -19,17 +19,19 @@ const RelatedConversations: React.FC<IRelatedConversations> = ({ data, onChange 
 
   const addConversation = useCallback(() => {}, [onChange]);
 
-  const handleConversationOnChange = (newValue: ConversationInfoType, id: number) => {
-    const dataCopy = { ...data };
+  const handleConversationOnChange = useCallback(
+    (newValue: ConversationInfoType, id: number) => {
+      const dataCopy = { ...data };
 
-    if (!dataCopy.relatedConversations) {
-      dataCopy.relatedConversations = [];
-    }
+      if (!dataCopy.relatedConversations) {
+        dataCopy.relatedConversations = [];
+      }
 
-    dataCopy.relatedConversations[id] = newValue;
-
-    onChange?.(dataCopy);
-  };
+      dataCopy.relatedConversations[id] = newValue;
+      onChange?.(dataCopy);
+    },
+    [data]
+  );
 
   return (
     <>
