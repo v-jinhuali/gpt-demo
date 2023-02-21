@@ -63,9 +63,7 @@ const ChatBox: FC<IChatBoxProps> = ({ data, popSuggestionsData, onChange, onSmar
 
   return (
     <div className={styles.chatBoxContainer}>
-      <div className={styles.header}>
-        <UserInfo {...data?.userTarget} />
-      </div>
+      <UserInfo {...data?.userTarget} />
       <div ref={contentRef} className={styles.content}>
         {messages.map(item => (
           <Message
