@@ -35,7 +35,7 @@ const MeetingInfo: React.FC<IMeetingInfoProps> = ({ id, meeting, onChange }) => 
     [id, meeting, onChange]
   );
 
-  const handleCheckboxOnChange = useCallback(
+  const handleCheckboxChange = useCallback(
     (e: CheckboxChangeEvent) => {
       const newMeeting = { ...meeting };
       newMeeting.checked = e.target.checked;
@@ -50,7 +50,7 @@ const MeetingInfo: React.FC<IMeetingInfoProps> = ({ id, meeting, onChange }) => 
 
   return (
     <div className={styles.meetingCard}>
-      <Checkbox checked={checked} onChange={handleCheckboxOnChange}></Checkbox>
+      <Checkbox checked={checked} onChange={handleCheckboxChange}></Checkbox>
       <div className={styles.container}>
         <div className={styles.title}>
           <EditableText

@@ -40,3 +40,7 @@ export enum Mode {
   Starter,
   Reply
 }
+export enum UserType{
+  Me,
+  Target
+}

@@ -1,17 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { message } from "antd";
 import ChatBox from "./ChatBox";
-import UserInfo from "./UserInfo";
 import RecentConverstaions from "./RecentConversations";
 import CalendarInfo from "./CalerdarInfo";
 import { postData } from "@/services";
 import { mockedInfo } from "../mocked-data";
-import { ChatGptResponseType, DataType } from "./index.interface";
+import { ChatGptResponseType, DataType, UserType } from "./index.interface";
 
 import styles from "./index.less";
 import Toolbar from "./Toolbar";
-import NewUserInfo from "./NewUserInfo";
 import RelatedConversations from "./RelatedConversations";
+import UserInfo from "./UserInfo";
 
 const FhlChatGpt: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -52,20 +51,23 @@ const FhlChatGpt: React.FC = () => {
     [getResponseFromChatGpt]
   );
 
-  const updateStatus = (newVal: string, id: string | number) => {
-    if (!newVal) {
-      return;
-    }
+  const updateUserStatus = useCallback(
+    (status: string, userType: UserType) => {
+      if (!status) {
+        return;
+      }
 
-    var copyData = { ...data };
-    if (id === "me") {
-      copyData.userMe!.status = newVal;
-    } else {
-      copyData.userTarget!.status = newVal;
-    }
+      var copyData = { ...data };
+      if (userType === UserType.Me) {
+        copyData.userMe!.status = status;
+      } else {
+        copyData.userTarget!.status = status;
+      }
 
-    setData(copyData);
-  };
+      setData(copyData);
+    },
+    [data]
+  );
 
   useEffect(() => {
     setTimeout(() => {
@@ -90,16 +92,17 @@ const FhlChatGpt: React.FC = () => {
           }}
         ></Toolbar>
         {/* <UserInfo {...data.userMe} /> */}
-        <NewUserInfo
+        <UserInfo
+          userType={UserType.Me}
           busy={busy}
           {...data.userMe}
-          onChange={updateStatus}
+          onChange={updateUserStatus}
           onGet={() => getResponseFromChatGpt(data)}
         />
         <ChatBox
           data={data}
           popSuggestionsData={popSuggestionsData}
-          onUpdateStatus={updateStatus}
+          onStatusChange={updateUserStatus}
           onChange={handleOnChange}
         />
       </div>

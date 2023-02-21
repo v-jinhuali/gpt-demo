@@ -15,7 +15,7 @@ interface IConversationProps {
 const Conversation: React.FC<IConversationProps> = ({ data, conversation, id, onChange }) => {
   const myName = data?.userMe?.name ?? "";
 
-  const handleOnchange = useCallback(
+  const handleChange = useCallback(
     (e: CheckboxChangeEvent) => {
       var copyData = { ...conversation };
       copyData.checked = e.target.checked;
@@ -26,7 +26,7 @@ const Conversation: React.FC<IConversationProps> = ({ data, conversation, id, on
 
   return (
     <div className={styles.conversationContainer}>
-      <Checkbox checked={conversation.checked} onChange={handleOnchange}></Checkbox>
+      <Checkbox checked={conversation.checked} onChange={handleChange}></Checkbox>
       {conversation.messages?.map((item, index) => (
         <Message
           key={index + "-" + item.name}
