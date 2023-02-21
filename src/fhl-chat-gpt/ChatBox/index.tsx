@@ -38,6 +38,10 @@ const ChatBox: React.FC<IChatBoxProps> = ({
     []
   );
 
+  useEffect(() => {
+    setInputValue("");
+  }, [data?.mode]);
+
   const handleInputEnter = useCallback(() => {
     if (!inputValue) {
       return;

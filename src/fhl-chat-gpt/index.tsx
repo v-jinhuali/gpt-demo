@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { message } from "antd";
 import ChatBox from "./ChatBox";
 import UserInfo from "./UserInfo";
@@ -82,7 +82,13 @@ const FhlChatGpt: React.FC = () => {
       {contextHolder}
 
       <div className={styles.chatContainer}>
-        <Toolbar data={data} onChange={newData => setData(newData)}></Toolbar>
+        <Toolbar
+          data={data}
+          onChange={newData => {
+            setData(newData);
+            setPopSuggestionsData([]);
+          }}
+        ></Toolbar>
         {/* <UserInfo {...data.userMe} /> */}
         <NewUserInfo
           busy={busy}
