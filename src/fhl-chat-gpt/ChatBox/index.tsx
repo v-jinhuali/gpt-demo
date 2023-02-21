@@ -7,9 +7,11 @@ import SmartReply from "../SmartReply";
 
 import "antd/dist/antd.css";
 import { SendOutlined } from "@ant-design/icons";
-import { ChatGptResponseType, DataType, Mode } from "../index.interface";
+import { ChatGptResponseType, DataType, MessageInfoType, Mode } from "../index.interface";
+import NewMessage from "../NewMessage";
 
 interface IChatBoxProps {
+  disable: boolean;
   data?: DataType;
   popSuggestionsData?: ChatGptResponseType[];
   onChange?: (newVal: DataType) => void;
@@ -17,6 +19,7 @@ interface IChatBoxProps {
 }
 
 const ChatBox: React.FC<IChatBoxProps> = ({
+  disable,
   data,
   popSuggestionsData,
   onChange,
@@ -47,6 +50,20 @@ const ChatBox: React.FC<IChatBoxProps> = ({
     onChange?.(dataCopy);
   }, [data, inputValue, myName]);
 
+  const handleEditedMessageFromOther = useCallback(
+    (item: MessageInfoType, index: number) => {
+      if (!item.message) {
+        return;
+      }
+      setInputValue("");
+      const dataCopy = { ...data };
+      // (dataCopy.recentConversations?.[0] ?? [])[index] = item;
+      dataCopy.receivedMessage = item.message;
+      onChange?.(dataCopy);
+    },
+    [data]
+  );
+
   const handleSmartClick = useCallback(
     (value: ChatGptResponseType) => {
       setInputValue(value.message ?? "");
@@ -69,13 +86,30 @@ const ChatBox: React.FC<IChatBoxProps> = ({
       </div>
       <div ref={contentRef} className={styles.content}>
         {messages.map((item, index) => (
-          <Message key={index} isSelf={item.name === myName} message={item.message ?? ""} />
+          // <Message key={index} isSelf={item.name === myName} message={item.message ?? ""} />
+          <NewMessage
+            key={index}
+            id={index}
+            myName={myName}
+            item={item}
+            onChange={handleEditedMessageFromOther}
+          ></NewMessage>
         ))}
       </div>
       <div className={styles.inputWrapper}>
         <div className={styles.inputBox}>
-          <Input value={inputValue} onChange={handleInputChange} onPressEnter={handleInputEnter} />
-          <Button type="primary" icon={<SendOutlined />} onClick={handleInputEnter}></Button>
+          <Input
+            disabled={disable}
+            value={inputValue}
+            onChange={handleInputChange}
+            onPressEnter={handleInputEnter}
+          />
+          <Button
+            disabled={disable}
+            type="primary"
+            icon={<SendOutlined />}
+            onClick={handleInputEnter}
+          ></Button>
         </div>
         {!!popSuggestionsData?.length && (
           <div className={styles.smartReplyBox}>

@@ -10,11 +10,13 @@ import { ChatGptResponseType, DataType } from "./index.interface";
 
 import styles from "./index.less";
 import Toolbar from "./Toolbar";
+import NewUserInfo from "./NewUserInfo";
 
 const FhlChatGpt: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [data, setData] = useState<DataType>({});
   const [popSuggestionsData, setPopSuggestionsData] = useState<ChatGptResponseType[]>([]);
+  const [busy, setBusy] = useState<boolean>(false);
 
   const username = useMemo(() => data.userMe?.name, [data]);
 
@@ -23,11 +25,13 @@ const FhlChatGpt: React.FC = () => {
       const res = await postData("http://10.172.44.71:12345/smartreply", newData);
 
       const resData = res.data as ChatGptResponseType[];
+      setBusy(false);
 
       if (!!resData?.length) {
         setTimeout(() => setPopSuggestionsData(resData ?? []), 10);
       }
     } catch (err) {
+      setBusy(false);
       messageApi.open({
         type: "error",
         content: `${err}`,
@@ -38,6 +42,7 @@ const FhlChatGpt: React.FC = () => {
 
   const handleOnChange = useCallback(
     (newData: DataType) => {
+      setBusy(true);
       setData(newData);
       setPopSuggestionsData([]);
       getResponseFromChatGpt(newData);
@@ -62,7 +67,13 @@ const FhlChatGpt: React.FC = () => {
       <div className={styles.chatContainer}>
         <Toolbar data={data} onChange={newData => setData(newData)}></Toolbar>
         <UserInfo {...data.userMe} />
-        <ChatBox data={data} popSuggestionsData={popSuggestionsData} onChange={handleOnChange} />
+        {/* <NewUserInfo {...data.userMe} /> */}
+        <ChatBox
+          disable={busy}
+          data={data}
+          popSuggestionsData={popSuggestionsData}
+          onChange={handleOnChange}
+        />
       </div>
       <div className={styles.messageContainer}>
         <RecentConverstaions username={username} data={data} onChange={handleOnChange} />
