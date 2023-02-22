@@ -30,7 +30,7 @@ const UserInfo: React.FC<IUserInfoProps> = ({ userType, busy, name, status, onCh
       </div>
       {onGet && (
         <Button disabled={busy} type="primary" onClick={onGet}>
-          Get
+          Get suggestions
         </Button>
       )}
     </div>
