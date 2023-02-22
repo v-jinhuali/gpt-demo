@@ -60,11 +60,7 @@ const FhlChatGpt: React.FC = () => {
       if (!status) {
         return;
       }
-      console.log(11);
-      console.log(status);
-
       var copyData = { ...data };
-      console.log(copyData);
       if (userType === UserType.Me) {
         copyData.userMe!.status = status;
       } else {
@@ -113,7 +109,10 @@ const FhlChatGpt: React.FC = () => {
         <Header
           data={data}
           onChange={handleHeaderChange}
-          onSwitch={(isShowCalendar: boolean) => setIsShowCalendar(isShowCalendar)}
+          onSwitch={(isShowCalendar: boolean) => {
+            setIsShowCalendar(isShowCalendar);
+            setPopSuggestionsData([]);
+          }}
         ></Header>
       </div>
       <div className={styles.body}>

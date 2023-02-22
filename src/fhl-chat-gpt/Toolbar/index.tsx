@@ -20,7 +20,7 @@ const Toolbar: React.FC<IToolbarProps> = ({ data, onChange, onSwitch }) => {
       setMode(e.target.value);
 
       const dataCopy = { ...data };
-      
+
       dataCopy.mode = e.target.value;
       data?.recentConversations?.[0]?.splice(0, data?.recentConversations?.[0].length ?? 0);
       if (e.target.value === Mode.Reply) {
@@ -30,16 +30,18 @@ const Toolbar: React.FC<IToolbarProps> = ({ data, onChange, onSwitch }) => {
             { name: dataCopy.userTarget?.name, message: dataCopy.receivedMessage }
           ]
         ];
-      } 
+      }
 
       onChange?.(dataCopy);
     },
     [data]
   );
 
-
   const handleEditableEnter = useCallback(
     (value: string, id: number | string) => {
+      if (!value) {
+        return;
+      }
       setCurrentTime(value);
 
       const dataCopy = { ...data };
@@ -62,7 +64,7 @@ const Toolbar: React.FC<IToolbarProps> = ({ data, onChange, onSwitch }) => {
         unCheckedChildren="Documents"
         defaultChecked
         onChange={(checked: boolean) => {
-          setMode(Mode.Reply)
+          setMode(Mode.Reply);
           onSwitch?.(checked);
         }}
       />

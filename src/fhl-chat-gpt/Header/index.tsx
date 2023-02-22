@@ -27,7 +27,6 @@ const Header: React.FC<IHeaderProps> = ({ data, onChange, onSwitch }) => {
       }
       
       const copyData = { ...data };
-      console.log(copyData);
       copyData.userMe!.status = status;
       onChange?.(copyData, false);
     },

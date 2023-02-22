@@ -15,10 +15,12 @@ interface IUserInfoProps {
 }
 
 const UserInfo: React.FC<IUserInfoProps> = ({ userType, busy, name, status, onChange, onGet }) => {
-  const handleChange = useCallback((status: string, id: string | number) => {
-    
-    onChange?.(status, userType);
-  }, []);
+  const handleChange = useCallback(
+    (status: string, id: string | number) => {
+      onChange?.(status, userType);
+    },
+    [status, onChange]
+  );
 
   return (
     <div className={cn(styles.userInfoContainer)}>

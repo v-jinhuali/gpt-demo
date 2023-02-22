@@ -2,7 +2,7 @@ import { MessageInfoType, Mode } from "../fhl-chat-gpt/index.interface";
 
 export const mockedInfo = {
   isDocumentMode: false,
-  mode: Mode.Starter,
+  mode: Mode.Reply,
   userMe: {
     name: "Adam",
     status: "Available",
@@ -77,7 +77,7 @@ export const mockedInfo = {
 };
 export const mockedDocInfo = {
   isDocumentMode: true,
-  mode: Mode.Starter,
+  mode: Mode.Reply,
   userMe: {
     name: "AAA",
     status: "Available",

@@ -58,19 +58,6 @@ const ChatBox: React.FC<IChatBoxProps> = ({
     onChange?.(dataCopy);
   }, [data, inputValue, myName]);
 
-  const handleEditedMessageFromTarget = useCallback(
-    (item: MessageInfoType, index: number) => {
-      if (!item.message) {
-        return;
-      }
-      setInputValue("");
-      const dataCopy = { ...data };
-      // (dataCopy.recentConversations?.[0] ?? [])[index] = item;
-      dataCopy.receivedMessage = item.message;
-      onChange?.(dataCopy);
-    },
-    [data]
-  );
   const handleStatusChange = useCallback(
     (status: string, userType: UserType) => {
       if (!status) {
@@ -87,6 +74,18 @@ const ChatBox: React.FC<IChatBoxProps> = ({
     },
     [data, onChange, onSmartReplyClick]
   );
+
+  const handleMessageChange = (newValue: MessageInfoType, id: number | string) => {
+    console.log(id, newValue);
+    console.log(data);
+
+    if (data?.userMe?.name !== newValue.name) {
+      
+      const copyData = { ...data };
+      copyData.receivedMessage = newValue.message;
+      onChange?.(copyData);
+    }
+  };
 
   useEffect(() => {
     if (!contentRef.current) {
@@ -115,7 +114,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({
             id={index}
             myName={myName}
             item={item}
-            onChange={handleEditedMessageFromTarget}
+            onChange={handleMessageChange}
           ></Message>
         ))}
       </div>
