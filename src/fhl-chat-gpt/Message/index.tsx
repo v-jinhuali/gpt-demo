@@ -29,12 +29,13 @@ const Message: React.FC<IMessageProps> = ({ id, myName, item, onChange }) => {
       <div className={styles.contentWrapper}>
         <div className={styles.content}>
           <div className={styles.name}>{<span>{item.name}</span>}</div>
-          <EditableText
+          <div>{item.message ?? ""}</div>
+          {/* <EditableText
             className={cn(styles.editableText, styles.text)}
             id={id}
             value={item.message ?? ""}
             onChange={handleEditableEnter}
-          />
+          /> */}
         </div>
       </div>
     </div>

@@ -11,19 +11,23 @@ import { ChatGptResponseType, DataType, MessageInfoType, Mode, UserType } from "
 const { TextArea } = Input;
 
 interface IChatBoxProps {
+  busy?: Boolean;
   data?: DataType;
   popSuggestionsData?: ChatGptResponseType[];
   onChange?: (newVal: DataType) => void;
   onSmartReplyClick?: (value: ChatGptResponseType) => void;
   onStatusChange?: (status: string, userType: UserType) => void;
+  onCallApi?: () => void;
 }
 
 const ChatBox: React.FC<IChatBoxProps> = ({
+  busy,
   data,
   popSuggestionsData,
   onChange,
   onSmartReplyClick,
-  onStatusChange
+  onStatusChange,
+  onCallApi
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const contentRef = useRef<HTMLDivElement>(null);
@@ -54,25 +58,15 @@ const ChatBox: React.FC<IChatBoxProps> = ({
     onChange?.(dataCopy);
   }, [data, inputValue, myName]);
 
-  const handleEditedMessageFromTarget = useCallback(
-    (item: MessageInfoType, index: number) => {
-      if (!item.message) {
+  const handleStatusChange = useCallback(
+    (status: string, userType: UserType) => {
+      if (!status) {
         return;
       }
-      setInputValue("");
-      const dataCopy = { ...data };
-      // (dataCopy.recentConversations?.[0] ?? [])[index] = item;
-      dataCopy.receivedMessage = item.message;
-      onChange?.(dataCopy);
+      onStatusChange?.(status, userType);
     },
-    [data]
+    [onStatusChange]
   );
-  const handleStatusChange = useCallback((status: string, userType: UserType) => {
-    if (!status) {
-      return;
-    }
-    onStatusChange?.(status, userType);
-  }, [onStatusChange]);
 
   const handleSmartClick = useCallback(
     (value: ChatGptResponseType) => {
@@ -80,6 +74,18 @@ const ChatBox: React.FC<IChatBoxProps> = ({
     },
     [data, onChange, onSmartReplyClick]
   );
+
+  const handleMessageChange = (newValue: MessageInfoType, id: number | string) => {
+    console.log(id, newValue);
+    console.log(data);
+
+    if (data?.userMe?.name !== newValue.name) {
+      
+      const copyData = { ...data };
+      copyData.receivedMessage = newValue.message;
+      onChange?.(copyData);
+    }
+  };
 
   useEffect(() => {
     if (!contentRef.current) {
@@ -92,7 +98,13 @@ const ChatBox: React.FC<IChatBoxProps> = ({
   return (
     <div className={styles.chatBoxContainer}>
       <div className={styles.header}>
-        <UserInfo userType={UserType.Target} {...data?.userTarget} onChange={handleStatusChange} />
+        <UserInfo
+          busy={!!busy}
+          userType={UserType.Target}
+          {...data?.userTarget}
+          onChange={handleStatusChange}
+          onGet={onCallApi}
+        />
       </div>
       <div ref={contentRef} className={styles.content}>
         {messages.map((item, index) => (
@@ -102,7 +114,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({
             id={index}
             myName={myName}
             item={item}
-            onChange={handleEditedMessageFromTarget}
+            onChange={handleMessageChange}
           ></Message>
         ))}
       </div>
