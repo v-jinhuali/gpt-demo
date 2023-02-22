@@ -11,6 +11,7 @@ import { ChatGptResponseType, DataType, MessageInfoType, Mode, UserType } from "
 const { TextArea } = Input;
 
 interface IChatBoxProps {
+  busy?: Boolean;
   data?: DataType;
   popSuggestionsData?: ChatGptResponseType[];
   onChange?: (newVal: DataType) => void;
@@ -19,6 +20,7 @@ interface IChatBoxProps {
 }
 
 const ChatBox: React.FC<IChatBoxProps> = ({
+  busy,
   data,
   popSuggestionsData,
   onChange,
@@ -67,12 +69,15 @@ const ChatBox: React.FC<IChatBoxProps> = ({
     },
     [data]
   );
-  const handleStatusChange = useCallback((status: string, userType: UserType) => {
-    if (!status) {
-      return;
-    }
-    onStatusChange?.(status, userType);
-  }, [onStatusChange]);
+  const handleStatusChange = useCallback(
+    (status: string, userType: UserType) => {
+      if (!status) {
+        return;
+      }
+      onStatusChange?.(status, userType);
+    },
+    [onStatusChange]
+  );
 
   const handleSmartClick = useCallback(
     (value: ChatGptResponseType) => {
@@ -92,7 +97,13 @@ const ChatBox: React.FC<IChatBoxProps> = ({
   return (
     <div className={styles.chatBoxContainer}>
       <div className={styles.header}>
-        <UserInfo userType={UserType.Target} {...data?.userTarget} onChange={handleStatusChange} />
+        <UserInfo
+          busy={!!busy}
+          userType={UserType.Target}
+          {...data?.userTarget}
+          onChange={handleStatusChange}
+          onGet={() => {}}
+        />
       </div>
       <div ref={contentRef} className={styles.content}>
         {messages.map((item, index) => (

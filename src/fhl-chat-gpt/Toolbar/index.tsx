@@ -1,6 +1,6 @@
 import EditableText from "@/components/EditableText";
 import { Radio, RadioChangeEvent } from "antd";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { DataType, Mode } from "../index.interface";
 import styles from "./index.less";
 
@@ -10,7 +10,7 @@ interface IToolbarProps {
 }
 
 const Toolbar: React.FC<IToolbarProps> = ({ data, onChange }) => {
-  const [mode, setMode] = useState<Mode>(Mode.Starter);
+  const [mode, setMode] = useState<Mode>(Mode.Reply);
   const [currentTime, setCurrentTime] = useState<string>(data?.currentTime ?? "2/13/2023 13:45");
 
   const handleRadioGroupChange = useCallback(
@@ -38,6 +38,18 @@ const Toolbar: React.FC<IToolbarProps> = ({ data, onChange }) => {
     },
     [data]
   );
+  useEffect(()=>{
+    const dataCopy = { ...data };
+    const message = "Hi Adam, How's the status of your FHL project?";
+    dataCopy.receivedMessage = message;
+    dataCopy.recentConversations = [
+      [
+        ...(dataCopy.recentConversations?.[0] ?? []),
+        { name: dataCopy.userTarget?.name, message: message }
+      ]
+    ];
+    onChange?.(dataCopy);
+  },[]);
 
   const handleEditableEnter = useCallback(
     (value: string, id: number | string) => {
@@ -54,8 +66,8 @@ const Toolbar: React.FC<IToolbarProps> = ({ data, onChange }) => {
   return (
     <div className={styles.toolbarContainer}>
       <Radio.Group value={mode} onChange={handleRadioGroupChange}>
-        <Radio.Button value={Mode.Starter}>Starter</Radio.Button>
         <Radio.Button value={Mode.Reply}>Reply</Radio.Button>
+        <Radio.Button value={Mode.Starter}>Starter</Radio.Button>
       </Radio.Group>
       <EditableText
         id="currentTime"

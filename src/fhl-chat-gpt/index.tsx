@@ -11,6 +11,7 @@ import styles from "./index.less";
 import Toolbar from "./Toolbar";
 import RelatedConversations from "./RelatedConversations";
 import UserInfo from "./UserInfo";
+import Header from "./Header";
 
 const FhlChatGpt: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -82,38 +83,28 @@ const FhlChatGpt: React.FC = () => {
   return (
     <div className={styles.container}>
       {contextHolder}
-
-      <div className={styles.chatContainer}>
-        <Toolbar
-          data={data}
-          onChange={newData => {
-            setData(newData);
-            setPopSuggestionsData([]);
-          }}
-        ></Toolbar>
-        {/* <UserInfo {...data.userMe} /> */}
-        <UserInfo
-          userType={UserType.Me}
-          busy={busy}
-          {...data.userMe}
-          onChange={updateUserStatus}
-          onGet={() => getResponseFromChatGpt(data)}
-        />
-        <ChatBox
-          data={data}
-          popSuggestionsData={popSuggestionsData}
-          onStatusChange={updateUserStatus}
-          onChange={handleOnChange}
-        />
+      <div className={styles.header}>
+        <Header data={data}></Header>
       </div>
-      {/* <div className={styles.messageContainer}>
+      <div className={styles.body}>
+        <div className={styles.chatContainer}>
+          {/* <UserInfo {...data.userMe} /> */}
+          <ChatBox
+            data={data}
+            popSuggestionsData={popSuggestionsData}
+            onStatusChange={updateUserStatus}
+            onChange={handleOnChange}
+          />
+        </div>
+        {/* <div className={styles.messageContainer}>
         <RecentConverstaions username={username} data={data} onChange={handleOnChange} />
       </div> */}
-      <div className={styles.messageContainer}>
-        <RelatedConversations data={data} onChange={newData => setData(newData)} />
-      </div>
-      <div className={styles.otherInfo}>
-        <CalendarInfo data={data} onChange={newData => setData(newData)} />
+        <div className={styles.messageContainer}>
+          <RelatedConversations data={data} onChange={newData => setData(newData)} />
+        </div>
+        <div className={styles.otherInfo}>
+          <CalendarInfo data={data} onChange={newData => setData(newData)} />
+        </div>
       </div>
     </div>
   );

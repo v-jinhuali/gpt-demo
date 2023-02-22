@@ -1,7 +1,8 @@
 import { EditableText } from "@/components";
+import cn from "classnames";
 import { Button } from "antd";
 import { useCallback } from "react";
-import { UserType } from "../index.interface";
+import { DataType, UserType } from "../index.interface";
 import styles from "./index.less";
 
 interface IUserInfoProps {
@@ -19,19 +20,19 @@ const UserInfo: React.FC<IUserInfoProps> = ({ userType, busy, name, status, onCh
   }, []);
 
   return (
-    <div className={styles.userInfoContainer}>
-      <div className={styles.basicInfo}>{name ?? "--"}</div>
-      <div className={styles.status}>
-        <div className={styles.text}>
+    <div className={cn(styles.userInfoContainer)}>
+      <div className={styles.text}>
+        <div className={styles.basicInfo}>{name ?? "--"}</div>
+        <div className={styles.status}>
           <span>Status: </span>
           <EditableText id={userType} value={status ?? "--"} onChange={handleChange}></EditableText>
         </div>
-        {onGet && (
-          <Button disabled={busy} type="primary" onClick={onGet}>
-            Get
-          </Button>
-        )}
       </div>
+      {onGet && (
+        <Button disabled={busy} type="primary" onClick={onGet}>
+          Get
+        </Button>
+      )}
     </div>
   );
 };
