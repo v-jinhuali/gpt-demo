@@ -17,6 +17,7 @@ interface IChatBoxProps {
   onChange?: (newVal: DataType) => void;
   onSmartReplyClick?: (value: ChatGptResponseType) => void;
   onStatusChange?: (status: string, userType: UserType) => void;
+  onCallApi?: () => void;
 }
 
 const ChatBox: React.FC<IChatBoxProps> = ({
@@ -25,7 +26,8 @@ const ChatBox: React.FC<IChatBoxProps> = ({
   popSuggestionsData,
   onChange,
   onSmartReplyClick,
-  onStatusChange
+  onStatusChange,
+  onCallApi
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const contentRef = useRef<HTMLDivElement>(null);
@@ -102,7 +104,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({
           userType={UserType.Target}
           {...data?.userTarget}
           onChange={handleStatusChange}
-          onGet={() => {}}
+          onGet={onCallApi}
         />
       </div>
       <div ref={contentRef} className={styles.content}>

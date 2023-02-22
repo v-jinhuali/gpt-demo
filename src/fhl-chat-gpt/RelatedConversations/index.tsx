@@ -1,10 +1,9 @@
 import { useCallback, useMemo } from "react";
 import { ConversationInfoType, DataType } from "../index.interface";
-
+import Conversation from "./Conversation";
 import styles from "./index.less";
 import { Button, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import Conversation from "./Conversation";
 
 interface IRelatedConversations {
   data?: DataType;
