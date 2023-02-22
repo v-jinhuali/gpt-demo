@@ -21,13 +21,11 @@ module.exports = {
       version: "latest"
     }
   },
-  plugins: ["react", "@typescript-eslint", "jest", "testing-library/react", "prettier"],
+  plugins: ["react", "@typescript-eslint", "prettier", "react-hooks"],
   extends: [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:jest/recommended",
-    "plugin:testing-library/react",
     "prettier"
   ],
   rules: {
@@ -108,8 +106,8 @@ module.exports = {
     "react/jsx-no-undef": 1,
     "react/jsx-pascal-case": 0,
     "react/jsx-sort-props": 0,
-    "react/jsx-uses-react": 2,
-    "react/react-in-jsx-scope": 2,
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
     "react/jsx-uses-vars": 2,
     "react/no-danger": 0,
     "react/no-did-mount-set-state": 0,
@@ -120,19 +118,12 @@ module.exports = {
     "react/no-unknown-property": 2,
     "react/prefer-es6-class": 2,
     "react/prop-types": 0,
-    "react/react-in-jsx-scope": 2,
     "react/self-closing-comp": 0,
     "react/sort-comp": 0,
     "react/no-array-index-key": 0,
     "react/no-deprecated": 1,
     "react/jsx-equals-spacing": 2,
-    "jest/no-focused-tests": "error",
-    "jest/no-identical-title": "error",
-    "jest/valid-expect": "error",
-    "testing-library/await-async-query": "error",
-    "testing-library/no-await-sync-query": "error",
-    "jest/no-disabled-tests": "warn",
-    "jest/prefer-to-have-length": "warn",
-    "testing-library/no-debugging-utils": "warn"
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 };

@@ -12,14 +12,14 @@ import RelatedConversations from "./RelatedConversations";
 import Header from "./Header";
 import RelatedDocuments from "./RelatedDocuments";
 
-const FhlChatGpt: React.FC = () => {
+const FhlChatGpt: FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [data, setData] = useState<DataType>({});
   const [popSuggestionsData, setPopSuggestionsData] = useState<ChatGptResponseType[]>([]);
   const [busy, setBusy] = useState<boolean>(false);
   const [isShowCalendar, setIsShowCalendar] = useState<boolean>(true);
 
-  const username = useMemo(() => data.userMe?.name, [data]);
+  const username = useMemo(() => data.userMe?.name, [data.userMe?.name]);
 
   const getResponseFromChatGpt = useCallback(async (newData: DataType) => {
     try {
@@ -43,7 +43,7 @@ const FhlChatGpt: React.FC = () => {
         duration: 2
       });
     }
-  }, []);
+  }, [messageApi]);
 
   const handleOnChange = useCallback(
     (newData: DataType) => {

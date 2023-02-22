@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useMemo } from "react";
 import MeetingInfo from "./MeetingInfo";
 import { DataType, MeetingInfoType } from "../index.interface";
 
@@ -11,7 +11,7 @@ interface ICalendarInfoProps {
   onChange?: (newVal: DataType) => void;
 }
 
-const CalendarInfo: React.FC<ICalendarInfoProps> = ({ data, onChange }) => {
+const CalendarInfo: FC<ICalendarInfoProps> = ({ data, onChange }) => {
   const meetings = useMemo(
     () => data?.userMe?.calendar?.map((item, index) => ({ ...item, index })) ?? [],
     [data]
