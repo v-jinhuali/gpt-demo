@@ -1,4 +1,4 @@
-import { KeyboardEventHandler, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Input, InputRef } from "antd";
 import styles from "./index.less";
 import Message from "../Message";
@@ -7,25 +7,27 @@ import SmartReply from "../SmartReply";
 
 import "antd/dist/antd.css";
 import { SendOutlined } from "@ant-design/icons";
-import { ChatGptResponseType, DataType, MessageInfoType, Mode } from "../index.interface";
-import NewMessage from "../NewMessage";
-import NewUserInfo from "../NewUserInfo";
+import { ChatGptResponseType, DataType, MessageInfoType, Mode, UserType } from "../index.interface";
 const { TextArea } = Input;
 
 interface IChatBoxProps {
+  busy?: Boolean;
   data?: DataType;
   popSuggestionsData?: ChatGptResponseType[];
   onChange?: (newVal: DataType) => void;
   onSmartReplyClick?: (value: ChatGptResponseType) => void;
-  onUpdateStatus?: (newVal: string, id: string) => void;
+  onStatusChange?: (status: string, userType: UserType) => void;
+  onCallApi?: () => void;
 }
 
 const ChatBox: React.FC<IChatBoxProps> = ({
+  busy,
   data,
   popSuggestionsData,
   onChange,
   onSmartReplyClick,
-  onUpdateStatus
+  onStatusChange,
+  onCallApi
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const contentRef = useRef<HTMLDivElement>(null);
@@ -56,25 +58,15 @@ const ChatBox: React.FC<IChatBoxProps> = ({
     onChange?.(dataCopy);
   }, [data, inputValue, myName]);
 
-  const handleEditedMessageFromOther = useCallback(
-    (item: MessageInfoType, index: number) => {
-      if (!item.message) {
+  const handleStatusChange = useCallback(
+    (status: string, userType: UserType) => {
+      if (!status) {
         return;
       }
-      setInputValue("");
-      const dataCopy = { ...data };
-      // (dataCopy.recentConversations?.[0] ?? [])[index] = item;
-      dataCopy.receivedMessage = item.message;
-      onChange?.(dataCopy);
+      onStatusChange?.(status, userType);
     },
-    [data]
+    [onStatusChange]
   );
-  const updateStatus = (newVal: string, id: string | number) => {
-    if (!newVal) {
-      return;
-    }
-    onUpdateStatus?.(newVal, "target");
-  };
 
   const handleSmartClick = useCallback(
     (value: ChatGptResponseType) => {
@@ -82,6 +74,18 @@ const ChatBox: React.FC<IChatBoxProps> = ({
     },
     [data, onChange, onSmartReplyClick]
   );
+
+  const handleMessageChange = (newValue: MessageInfoType, id: number | string) => {
+    console.log(id, newValue);
+    console.log(data);
+
+    if (data?.userMe?.name !== newValue.name) {
+      
+      const copyData = { ...data };
+      copyData.receivedMessage = newValue.message;
+      onChange?.(copyData);
+    }
+  };
 
   useEffect(() => {
     if (!contentRef.current) {
@@ -94,18 +98,24 @@ const ChatBox: React.FC<IChatBoxProps> = ({
   return (
     <div className={styles.chatBoxContainer}>
       <div className={styles.header}>
-        <NewUserInfo {...data?.userTarget} onChange={updateStatus} />
+        <UserInfo
+          busy={!!busy}
+          userType={UserType.Target}
+          {...data?.userTarget}
+          onChange={handleStatusChange}
+          onGet={onCallApi}
+        />
       </div>
       <div ref={contentRef} className={styles.content}>
         {messages.map((item, index) => (
           // <Message key={index} isSelf={item.name === myName} message={item.message ?? ""} />
-          <NewMessage
+          <Message
             key={index}
             id={index}
             myName={myName}
             item={item}
-            onChange={handleEditedMessageFromOther}
-          ></NewMessage>
+            onChange={handleMessageChange}
+          ></Message>
         ))}
       </div>
       <div className={styles.inputWrapper}>

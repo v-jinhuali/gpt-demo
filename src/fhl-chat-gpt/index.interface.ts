@@ -21,6 +21,13 @@ export interface ConversationInfoType {
   checked: boolean;
 }
 
+export interface DocumentInfoType {
+  name: string;
+  link?: string;
+  summary?: string;
+  checked: boolean;
+}
+
 export interface DataType {
   userTarget?: UserInfoType;
   userMe?: UserInfoType;
@@ -29,6 +36,8 @@ export interface DataType {
   mode?: Mode;
   receivedMessage?: string;
   currentTime?: string;
+  documents?: DocumentInfoType[];
+  isDocumentMode?: boolean;
 }
 
 export interface ChatGptResponseType {
@@ -39,4 +48,8 @@ export interface ChatGptResponseType {
 export enum Mode {
   Starter,
   Reply
+}
+export enum UserType {
+  Me,
+  Target
 }

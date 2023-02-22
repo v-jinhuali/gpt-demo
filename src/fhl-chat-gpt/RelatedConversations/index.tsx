@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { ConversationInfoType, DataType, MeetingInfoType } from "../index.interface";
-
+import { useCallback, useMemo } from "react";
+import { ConversationInfoType, DataType } from "../index.interface";
+import Conversation from "./Conversation";
 import styles from "./index.less";
 import { Button, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import Conversation from "./Conversation";
 
 interface IRelatedConversations {
   data?: DataType;
@@ -19,7 +18,7 @@ const RelatedConversations: React.FC<IRelatedConversations> = ({ data, onChange 
 
   const addConversation = useCallback(() => {}, [onChange]);
 
-  const handleConversationOnChange = useCallback(
+  const handleConversationChange = useCallback(
     (newValue: ConversationInfoType, id: number) => {
       const dataCopy = { ...data };
 
@@ -48,7 +47,7 @@ const RelatedConversations: React.FC<IRelatedConversations> = ({ data, onChange 
             data={data}
             conversation={conversation}
             id={conversation.index}
-            onChange={handleConversationOnChange}
+            onChange={handleConversationChange}
           ></Conversation>
         ))}
       </div>
